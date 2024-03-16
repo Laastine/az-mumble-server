@@ -1,0 +1,10 @@
+---
+  - name: Install updates
+    apt:
+      upgrade: dist
+      update_cache: yes
+    become: true
+
+
+
+

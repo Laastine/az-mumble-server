@@ -1,0 +1,16 @@
+---
+  - name: Install murmur (mumble-server)
+    apt:
+      name: "mumble-server"
+      state: latest
+      update_cache: yes
+    become: true
+
+  - name: Apply mumble configuration
+    template:
+      src: mumble-server.ini.j2
+      dest: /etc/mumble-server.ini
+      owner: root
+      group: mumble-server
+      mode: '0640'
+    become: true

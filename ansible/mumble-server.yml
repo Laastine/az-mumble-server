@@ -1,0 +1,7 @@
+- hosts: mumble-server
+  gather_facts: False
+  pre_tasks:
+    - shell: test -e /usr/bin/python || (sudo apt install -y python3)
+  roles:
+    - updateserver
+    - mumble
