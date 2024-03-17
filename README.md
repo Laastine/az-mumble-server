@@ -10,9 +10,9 @@ Install ansible: https://docs.ansible.com/ansible/latest/installation_guide/intr
 ## Terraform commands
 (in terraform directory)
 - `terraform init` - Run once to initialize project
-- `terraform plan -var-file="vars.tfvars"` - Show configuration plan
-- `terraform apply -var-file="vars.tfvars" -auto-approve` - Apply with custom variables
-- `terraform destroy -var-file="vars.tfvars" -auto-approve` - Delete resources
+- `terraform plan` - Show configuration plan
+- `terraform apply -auto-approve` - Apply with custom variables
+- `terraform destroy -auto-approve` - Delete resources
 
 ## Ansible
 (in terraform directory)
