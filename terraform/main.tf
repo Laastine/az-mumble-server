@@ -37,8 +37,8 @@ resource "azurerm_subnet" "mumble-subnet" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_public_ip" "mumble-public-ip" {
-  name                = "mumble-public-ip"
+resource "azurerm_public_ip" "mumble-private-ip" {
+  name                = "mumble-private-ip"
   resource_group_name = azurerm_resource_group.mumble-rg.name
   location            = azurerm_resource_group.mumble-rg.location
   allocation_method   = "Dynamic"
@@ -57,11 +57,10 @@ resource "azurerm_network_security_group" "mumble-nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "*"
+    source_address_prefix      = azurerm_network_interface.bastion-nic.private_ip_address
     destination_address_prefix = "*"
   }
 }
-
 
 resource "azurerm_network_interface" "mumble-nic" {
   name                = "mumble-nic"
@@ -72,12 +71,12 @@ resource "azurerm_network_interface" "mumble-nic" {
     name                          = "mumble-nic"
     subnet_id                     = azurerm_subnet.mumble-subnet.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.mumble-public-ip.id
+    public_ip_address_id          = azurerm_public_ip.mumble-private-ip.id
+    private_ip_address            = "10.0.2.4"
   }
 }
 
-# Connect the security group to the network interface
-resource "azurerm_network_interface_security_group_association" "nic-nsg" {
+resource "azurerm_network_interface_security_group_association" "mumble-nic-nsg" {
   network_interface_id      = azurerm_network_interface.mumble-nic.id
   network_security_group_id = azurerm_network_security_group.mumble-nsg.id
 }
